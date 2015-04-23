@@ -1,0 +1,15 @@
+import client
+
+
+
+URL="http://pac.bouillaguet.info/TP5"
+link_param = "/RSA-keygen/challenge/echallier"
+answer = "/RSA-keygen/PK/echallier"
+
+serverObj = client.Server(URL)
+
+
+param = serverObj.query(link_param)
+print(param)
+
+#print(serverObj.query(answer, {'m': m, 'signature': (r, s)}))
