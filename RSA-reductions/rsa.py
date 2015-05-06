@@ -2,7 +2,7 @@ import random
 import fractions
 
 # TRICHE
-#http://crypto.stackexchange.com/questions/6361/is-sharing-the-modulus-for-multiple-rsa-key-pairs-secure/14713
+# http://crypto.stackexchange.com/questions/6361/is-sharing-the-modulus-for-multiple-rsa-key-pairs-secure/14713
 
 # ex
 # hash_object = hashlib.sha224(b'Hello World')
