@@ -1,17 +1,24 @@
 import client
 import tools
 import hashlib
+import random
+import base64
+
 
 # ex
 # hash_object = hashlib.sha224(b'Hello World')
 # hex_dig = hash_object.hexdigest()
 # print(hex_dig)
 
-
-
-
-
-
+#merci http://stackoverflow.com/questions/2489435/how-could-i-check-if-a-number-is-a-perfect-square
+def is_square(apositiveint):
+  x = apositiveint// 2
+  seen = set([x])
+  while x * x != apositiveint:
+    x = (x + (apositiveint // x)) // 2
+    if x in seen: return False
+    seen.add(x)
+  return True
 
 
 URL = "http://pac.bouillaguet.info/TP5"
@@ -29,21 +36,33 @@ phi = (p-1)*(q-1)
 d = tools.modinv(e, phi)
 n = p*q
 
-b = random.getrandbits(1023)
+while True:
+    u = random.getrandbits(16)
+    m = b'4d98f61df87dfdd61bbefdaffa78de1c'    
+    y = hashlib.sha256(m+bytes(u))
+    y = int(y.hexdigest(), base=16)
+    if is_square(y):
+        break
+
+print("===============================")
+print("u = ")
+print(u)
 
 
 
 #PubK = (n, b)
 #private = (p, q)
 
-m = serverObj.query(link_param, {'n': n})
 
-while True:
-    k = random.getrandbits(1025)
-    if k > 2:
-        if gcd(k, q) == 1:
-            r = pow(g, k, p)
-            s = (m-(x*r)
+
+
+
+# while True:
+#     k = random.getrandbits(1025)
+#     if k > 2:
+#         if gcd(k, q) == 1:
+#             r = pow(g, k, p)
+#             s = (m-(x*r)
 
 
 #print(serverObj.query(confirmation, {'m':dechifre}))
