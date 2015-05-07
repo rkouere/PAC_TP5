@@ -1,11 +1,10 @@
 import client
-import rsa
 import random
 from fractions import gcd
+import sys
 
 
-
-
+# resultat largement inspiré de 
 # voir http://stackoverflow.com/questions/2921406/calculate-primes-p-and-q-from-private-exponent-d-public-exponent-e-and-the
 # reponse 3
 
@@ -24,35 +23,58 @@ e = reply['e']
 p = None
 q = None
 
-k = (e*d)-1
-r = k
-t = 0
 
-def get_t(r):
+
+
+# r = k
+# t = 0
+
+def get_t(k):
+  t = 1
+  r = k
   while True:
-    if (r % 2 != 0) and k == pow(2, t) * r:
+    if (r % 2 != 0):
       break
     r = r // 2
     t = t + 1
-    return (r, t)
+  return (r, t)
 
-x = random.randrange(2, n)
+def mainLoop(g, k, n, r):
+  y = pow(g, r, n)
+  
+  for i in range(1, 100):
+    if y == 1 or y == -1:
+      return None
+    else:
+      for j in range(1, t-1):
+        x = pow(y, y, n)
+        if x == 1:
+          break
+        elif x == n-1:
+          return None
+        y = x
+      x = pow(y, y, n)
+      if x == 1:
+        return y
+    print("prime factors not found")
 
-expo = 2
-old = None
+# Let k = de – 1. If k is odd, then go to Step 4.
+k = (e*d)-1
+if k%2 != 0:
+  print(k)
+  print("prime factors not found")
+  sys.exit()
 
-while True:
-  if expo > pow(2, t):
-  s = pow(x, (k // expo), n) 
-  if s != 1 and old == 1:
-    p = gcd(s-1, n)
-    q = n // p
-  oldi = s
-  expo = expo * 2
+y = None
+(r, t) = get_t(k)
+while not y:
+  print("trying new one")
+  g = random.randrange(0, n-1)
+  y = mainLoop(g, k, n, r)
+p = gcd(y-1, n)
 
 
 
-factors = rsa.factor_rsa(e, d, n)
 
 print(serverObj.query(answer, {'p': p}))
 
