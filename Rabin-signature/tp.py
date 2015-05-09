@@ -23,7 +23,7 @@ def is_square(apositiveint):
 
 URL = "http://pac.bouillaguet.info/TP5"
 link_param = "/Rabin-signature/challenge/echallier"
-answer = "/RSA-keygen/PK/echallier"
+answer = "/Rabin-signature/check/echallier"
 confirmation = "/RSA-keygen/confirmation/echallier"
 
 serverObj = client.Server(URL)
@@ -36,33 +36,18 @@ phi = (p-1)*(q-1)
 d = tools.modinv(e, phi)
 n = p*q
 
+return_server = serverObj.query(link_param, {'n': n})
+
+
 while True:
-    u = random.getrandbits(16)
-    m = b'4d98f61df87dfdd61bbefdaffa78de1c'    
-    y = hashlib.sha256(m+bytes(u))
-    y = int(y.hexdigest(), base=16)
-    if is_square(y):
-        break
-
-print("===============================")
-print("u = ")
-print(u)
+  u_int = random.randint(1, n)
+  u = "{0:x}".format(u_int)
+  m = return_server['m'].encode()    
+  y = hashlib.sha256(m+u.encode())
+  y = int(y.hexdigest(), base=16)
+  s = pow(y, 2, n)
+  if is_square(y):
+    break
 
 
-
-#PubK = (n, b)
-#private = (p, q)
-
-
-
-
-
-# while True:
-#     k = random.getrandbits(1025)
-#     if k > 2:
-#         if gcd(k, q) == 1:
-#             r = pow(g, k, p)
-#             s = (m-(x*r)
-
-
-#print(serverObj.query(confirmation, {'m':dechifre}))
+print(serverObj.query(answer, {'n': n, 's': s, 'u': u}))
