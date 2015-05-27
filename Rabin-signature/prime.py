@@ -1,32 +1,20 @@
-import client
 import random
 import miller_rabin
 from fractions import gcd
-
-URL="http://pac.bouillaguet.info/TP5"
-link_param = "/RSA-keygen/challenge/echallier"
-answer = "/RSA-keygen/PK/echallier"
-confirmation = "/RSA-keygen/confirmation/echallier"
-
-serverObj = client.Server(URL)
-print(serverObj.query(link_param))
-
-
-
 
 def generateBigPrime():
     print("=======================")
     print("Get prime")
     while True:
         prime = random.getrandbits(1025)
-        if miller_rabin.is_probable_prime(prime):
+        if miller_rabin.is_probable_prime(prime) and prime % 4 == 3:
             return prime
 
 #param = serverObj.query(link_param)
 def getTwoPrime(e):
     while True:
         p = generateBigPrime()
-
+            
 
         q = generateBigPrime()
 
@@ -72,18 +60,3 @@ def modinv(a, m):
         raise ValueError
     return x % m
 
-
-e =  535890187425344683208917930322408044245
-# p , q = getTwoPrime(e)
-
-
-
-p = 277461027049854810288405758908172098629253435446959073090615700876807909390843667708032667263836741272893300164600643617600904696366008257486465679283070534258115902100961955522211170750181191229411454331047399566105121104637984719523302928584689237682786859691245578154493434772170438439978284764756836074199
-q = 170546191165200071045408843438399129154545534123331514137997529965617229025417495160698071473291750491846942018957300308523616269031865565796522642357711473326380517067249236995772562816300987333175837191239786364745310750596411786403167126078819373310363468430133540610399083878706320397608768367315686273137
-phi = (p-1)*(q-1)
-d = modinv(e, phi)
-n = p*q
-
-ciphertext = serverObj.query(answer, {'n': n, 'e': e})['ciphertext']
-dechifre = pow(ciphertext, d, n)    
-print(serverObj.query(confirmation, {'m':dechifre}))
